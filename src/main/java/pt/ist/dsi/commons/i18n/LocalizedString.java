@@ -1,5 +1,5 @@
 /*
- * LocalisedString.java
+ * LocalizedString.java
  *
  * Copyright (c) 2013, Instituto Superior Técnico. All rights reserved.
  *
@@ -37,7 +37,7 @@ import com.google.gson.JsonObject;
 
 /**
  * <p>
- * Localised text, conceptually is a map between {@link Locale}s and the corresponding translation of a given text. This class is
+ * Localized text, conceptually is a map between {@link Locale}s and the corresponding translation of a given text. This class is
  * immutable to work as a value type in the domain. Content is fetched passing the {@link Locale} on which we intend to view the
  * text, the text returned is the closest possible translation.
  * </p>
@@ -53,7 +53,7 @@ import com.google.gson.JsonObject;
  * 
  * <pre>
  * <code>
- * new LocalisedString.Builder().with(Locale.ENGLISH, "hello")
+ * new LocalizedString.Builder().with(Locale.ENGLISH, "hello")
  *     .with(Locale.forLanguageTag("pt-PT"), "bom dia").build();
  * </code>
  * </pre>
@@ -67,8 +67,8 @@ import com.google.gson.JsonObject;
  * </p>
  * 
  */
-public final class LocalisedString implements Serializable, Comparable<LocalisedString> {
-    private static final Logger logger = LoggerFactory.getLogger(LocalisedString.class);
+public final class LocalizedString implements Serializable, Comparable<LocalizedString> {
+    private static final Logger logger = LoggerFactory.getLogger(LocalizedString.class);
 
     private static final class InternalMap extends HashMap<Locale, String> {
         public String getContent(Locale locale) {
@@ -133,7 +133,7 @@ public final class LocalisedString implements Serializable, Comparable<Localised
             return json;
         }
 
-        public static LocalisedString fromJson(JsonElement json) {
+        public static LocalizedString fromJson(JsonElement json) {
             Builder builder = new Builder();
             for (Entry<String, JsonElement> entry : json.getAsJsonObject().entrySet()) {
                 builder = builder.with(Locale.forLanguageTag(entry.getKey()), entry.getValue().getAsString());
@@ -144,8 +144,8 @@ public final class LocalisedString implements Serializable, Comparable<Localised
 
     /**
      * <p>
-     * Builders are created empty with {@link #Builder()} or created from an existing {@link LocalisedString} with
-     * {@link LocalisedString#builder()}.
+     * Builders are created empty with {@link #Builder()} or created from an existing {@link LocalizedString} with
+     * {@link LocalizedString#builder()}.
      * </p>
      * 
      * <p>
@@ -153,15 +153,15 @@ public final class LocalisedString implements Serializable, Comparable<Localised
      * <ul>
      * <li>{@link Builder#with(Locale, String)}</li>
      * <li>{@link Builder#without(Locale)}</li>
-     * <li>{@link Builder#append(LocalisedString)}</li>
-     * <li>{@link Builder#append(LocalisedString, String)}</li>
+     * <li>{@link Builder#append(LocalizedString)}</li>
+     * <li>{@link Builder#append(LocalizedString, String)}</li>
      * <li>{@link Builder#append(String)}</li>
      * <li>{@link Builder#append(String, String)}</li>
      * </ul>
      * </p>
      * 
      * <p>
-     * At the end, invoke {@link Builder#build()} to obtain the corresponding {@link LocalisedString}
+     * At the end, invoke {@link Builder#build()} to obtain the corresponding {@link LocalizedString}
      * </p>
      */
     public static final class Builder {
@@ -189,7 +189,7 @@ public final class LocalisedString implements Serializable, Comparable<Localised
          */
         public Builder with(Locale locale, String content) {
             if (locale == null) {
-                throw new RuntimeException("Attempted adding null locale to LocalisedString");
+                throw new RuntimeException("Attempted adding null locale to LocalizedString");
             }
             if (Strings.isNullOrEmpty(content)) {
                 logger.debug("adding null content for locale: {} to {}", locale.toLanguageTag(), this.toString());
@@ -213,25 +213,25 @@ public final class LocalisedString implements Serializable, Comparable<Localised
         }
 
         /**
-         * Appends the given Localised string at the end.
+         * Appends the given Localized string at the end.
          * 
-         * @param string the {@link LocalisedString} to append
+         * @param string the {@link LocalizedString} to append
          * @return The builder instance with the content changed.
          * 
-         * @see {@link #append(LocalisedString, String)}, {@link #append(String)}
+         * @see {@link #append(LocalizedString, String)}, {@link #append(String)}
          */
-        public Builder append(LocalisedString string) {
+        public Builder append(LocalizedString string) {
             return append(string, "");
         }
 
         /**
-         * Appends the given Localised string at the end, including a separator string between.
+         * Appends the given Localized string at the end, including a separator string between.
          * 
-         * @param string the {@link LocalisedString} to append
+         * @param string the {@link LocalizedString} to append
          * @param separator string to be placed between the contents
          * @return The builder instance with the content changed.
          */
-        public Builder append(LocalisedString string, String separator) {
+        public Builder append(LocalizedString string, String separator) {
             Set<Locale> locales = new HashSet<>(map.keySet());
             locales.addAll(string.map.keySet());
             for (Locale locale : locales) {
@@ -267,35 +267,35 @@ public final class LocalisedString implements Serializable, Comparable<Localised
         }
 
         /**
-         * Builds an {@link LocalisedString} from the builder state.
+         * Builds an {@link LocalizedString} from the builder state.
          * 
-         * @return the corresponding {@link LocalisedString}.
+         * @return the corresponding {@link LocalizedString}.
          */
-        public LocalisedString build() {
-            return new LocalisedString(map);
+        public LocalizedString build() {
+            return new LocalizedString(map);
         }
     }
 
     private final InternalMap map;
 
     /**
-     * Creates an empty {@link LocalisedString}.
+     * Creates an empty {@link LocalizedString}.
      */
-    public LocalisedString() {
+    public LocalizedString() {
         this.map = new InternalMap();
     }
 
     /**
-     * Creates an {@link LocalisedString} initialised with the given translation.
+     * Creates an {@link LocalizedString} initialised with the given translation.
      * 
      * @param locale {@link Locale} of the translation.
      * @param content translated text.
      */
-    public LocalisedString(Locale locale, final String content) {
+    public LocalizedString(Locale locale, final String content) {
         this.map = new Builder().with(locale, content).map;
     }
 
-    private LocalisedString(InternalMap map) {
+    private LocalizedString(InternalMap map) {
         this.map = map;
     }
 
@@ -313,10 +313,10 @@ public final class LocalisedString implements Serializable, Comparable<Localised
      * 
      * @param locale {@link Locale} of the translation.
      * @param content translated text.
-     * @return {@link LocalisedString} instance with the added translation.
+     * @return {@link LocalizedString} instance with the added translation.
      * @see {@link Builder#with(Locale, String)}
      */
-    public LocalisedString with(Locale locale, final String content) {
+    public LocalizedString with(Locale locale, final String content) {
         return builder().with(locale, content).build();
     }
 
@@ -324,33 +324,33 @@ public final class LocalisedString implements Serializable, Comparable<Localised
      * Same as <code>builder().without(locale).build()</code>. Does not change current instance.
      * 
      * @param locale {@link Locale} to remove.
-     * @return {@link LocalisedString} instance with the translation removed.
+     * @return {@link LocalizedString} instance with the translation removed.
      * @see {@link Builder#without(Locale)}
      */
-    public LocalisedString without(Locale locale) {
+    public LocalizedString without(Locale locale) {
         return builder().without(locale).build();
     }
 
     /**
      * Same as <code>builder().append(string).build()</code>. Does not change current instance.
      * 
-     * @param string the {@link LocalisedString} to append
-     * @return {@link LocalisedString} instance with the appended content.
-     * @see {@link Builder#append(LocalisedString)}
+     * @param string the {@link LocalizedString} to append
+     * @return {@link LocalizedString} instance with the appended content.
+     * @see {@link Builder#append(LocalizedString)}
      */
-    public LocalisedString append(LocalisedString string) {
+    public LocalizedString append(LocalizedString string) {
         return builder().append(string).build();
     }
 
     /**
      * Same as <code>builder().append(string, separator).build()</code>. Does not change current instance.
      * 
-     * @param string the {@link LocalisedString} to append
+     * @param string the {@link LocalizedString} to append
      * @param separator string to be placed between the contents
-     * @return {@link LocalisedString} instance with the appended content.
-     * @see {@link Builder#append(LocalisedString, String)}
+     * @return {@link LocalizedString} instance with the appended content.
+     * @see {@link Builder#append(LocalizedString, String)}
      */
-    public LocalisedString append(LocalisedString string, String separator) {
+    public LocalizedString append(LocalizedString string, String separator) {
         return builder().append(string, separator).build();
     }
 
@@ -358,10 +358,10 @@ public final class LocalisedString implements Serializable, Comparable<Localised
      * Same as <code>builder().append(string).build()</code>. Does not change current instance.
      * 
      * @param string the string to append
-     * @return {@link LocalisedString} instance with the appended content.
+     * @return {@link LocalizedString} instance with the appended content.
      * @see {@link Builder#append(String)}
      */
-    public LocalisedString append(String string) {
+    public LocalizedString append(String string) {
         return builder().append(string).build();
     }
 
@@ -370,15 +370,15 @@ public final class LocalisedString implements Serializable, Comparable<Localised
      * 
      * @param string the string to append
      * @param separator string to be placed between the contents
-     * @return {@link LocalisedString} instance with the appended content.
+     * @return {@link LocalizedString} instance with the appended content.
      * @see {@link Builder#append(String, String)}
      */
-    public LocalisedString append(String string, String separator) {
+    public LocalizedString append(String string, String separator) {
         return builder().append(string, separator).build();
     }
 
     /**
-     * Locales of the tanslations present in this {@link LocalisedString}
+     * Locales of the tanslations present in this {@link LocalizedString}
      * 
      * @return {@link Set} of {@link Locale}s.
      */
@@ -441,10 +441,10 @@ public final class LocalisedString implements Serializable, Comparable<Localised
      * Import from json.
      * 
      * @param json the {@link JsonElement} in the same format returned by {@link #json()}.
-     * @return the {@link LocalisedString} parsed from json.
+     * @return the {@link LocalizedString} parsed from json.
      * @see {@link #json()}
      */
-    public static LocalisedString fromJson(JsonElement json) {
+    public static LocalizedString fromJson(JsonElement json) {
         return InternalMap.fromJson(json);
     }
 
@@ -454,14 +454,14 @@ public final class LocalisedString implements Serializable, Comparable<Localised
     }
 
     @Override
-    public int compareTo(LocalisedString other) {
+    public int compareTo(LocalizedString other) {
         return getContent().compareTo(other.getContent());
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof LocalisedString) {
-            LocalisedString i18NString = (LocalisedString) obj;
+        if (obj instanceof LocalizedString) {
+            LocalizedString i18NString = (LocalizedString) obj;
             return map.equals(i18NString.map);
         }
         return false;
