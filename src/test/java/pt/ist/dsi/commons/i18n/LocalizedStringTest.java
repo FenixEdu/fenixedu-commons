@@ -53,7 +53,14 @@ public class LocalizedStringTest {
         assertEquals(helloPlusSpanish.getContent(esES), "hola");
 
         LocalizedString helloMinusEnglish = hello.builder().without(enGB).build();
-        assertNull(helloMinusEnglish.getContent(enGB));
+        final Locale currentLocale = I18N.getLocale();
+
+        if (ptPT.equals(currentLocale)) {
+            assertEquals(helloMinusEnglish.getContent(enGB), "olá");
+        } else {
+            assertNull(helloMinusEnglish.getContent(enGB));
+        }
+
     }
 
     @Test
@@ -74,7 +81,13 @@ public class LocalizedStringTest {
         assertEquals(helloPlusSpanish.getContent(esES), "hola");
 
         LocalizedString helloMinusEnglish = hello.without(enGB);
-        assertNull(helloMinusEnglish.getContent(enGB));
+
+        final Locale currentLocale = I18N.getLocale();
+        if (ptPT.equals(currentLocale)) {
+            assertEquals(helloMinusEnglish.getContent(enGB), "olá");
+        } else {
+            assertNull(helloMinusEnglish.getContent(enGB));
+        }
     }
 
     @Test
