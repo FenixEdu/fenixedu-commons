@@ -71,13 +71,13 @@ public class I18N {
      */
     public static void setLocale(Locale locale) {
         I18N.locale.set(locale);
-        logger.debug("Set locale to: {}", locale);
+        logger.trace("Set locale to: {}", locale);
     }
 
     public static void updateFromSession(HttpSession session) {
         if (session != null && session.getAttribute(LOCALE_KEY) != null) {
             locale.set((Locale) session.getAttribute(LOCALE_KEY));
-            logger.debug("Set thread's locale to: {}", locale.get().toString());
+            logger.trace("Set thread's locale to: {}", locale.get().toString());
         } else {
             locale.set(null);
         }
