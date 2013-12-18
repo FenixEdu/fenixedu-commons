@@ -1,4 +1,4 @@
-ist-dsi-commons
+fenixedu-commons
 ===============
 
-Toolkit for DSI projects
+Toolkit for FenixEdu projects
