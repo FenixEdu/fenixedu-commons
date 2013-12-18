@@ -1,8 +1,6 @@
 package org.fenixedu.commons.json;
 
 import org.apache.commons.codec.binary.Base64;
-import org.fenixedu.commons.json.JsonBuilder;
-import org.fenixedu.commons.json.JsonCreator;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

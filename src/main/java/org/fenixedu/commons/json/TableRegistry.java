@@ -72,9 +72,8 @@ class TableRegistry<T> {
         }
         if (defaultValues.containsKey(objectClass)) {
             return defaultValues.get(objectClass);
-        } else {
-            return internalGet(objectClass.getSuperclass());
         }
+        return internalGet(objectClass.getSuperclass());
     }
 
     private T get(Class<?> objectClass) {

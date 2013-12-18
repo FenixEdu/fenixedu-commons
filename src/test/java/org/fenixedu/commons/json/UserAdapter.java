@@ -1,8 +1,5 @@
 package org.fenixedu.commons.json;
 
-import org.fenixedu.commons.json.JsonAdapter;
-import org.fenixedu.commons.json.JsonBuilder;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 

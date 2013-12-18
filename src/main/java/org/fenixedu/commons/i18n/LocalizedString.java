@@ -68,9 +68,13 @@ import com.google.gson.JsonObject;
  * 
  */
 public final class LocalizedString implements Serializable, Comparable<LocalizedString> {
-    private static final Logger logger = LoggerFactory.getLogger(LocalizedString.class);
+    private static final long serialVersionUID = -31967064113338779L;
 
-    private static final class InternalMap extends HashMap<Locale, String> {
+    protected static final Logger logger = LoggerFactory.getLogger(LocalizedString.class);
+
+    protected static final class InternalMap extends HashMap<Locale, String> {
+        private static final long serialVersionUID = -2722162618911116061L;
+
         public String getContent(Locale locale) {
             if (containsKey(locale)) {
                 return get(locale);
@@ -165,7 +169,7 @@ public final class LocalizedString implements Serializable, Comparable<Localized
      * </p>
      */
     public static final class Builder {
-        private InternalMap map;
+        protected InternalMap map;
 
         /**
          * Create an empty builder.
@@ -174,7 +178,7 @@ public final class LocalizedString implements Serializable, Comparable<Localized
             this.map = new InternalMap();
         }
 
-        private Builder(InternalMap map) {
+        protected Builder(InternalMap map) {
             this.map = map;
         }
 
@@ -276,7 +280,7 @@ public final class LocalizedString implements Serializable, Comparable<Localized
         }
     }
 
-    private final InternalMap map;
+    protected final InternalMap map;
 
     /**
      * Creates an empty {@link LocalizedString}.
@@ -295,7 +299,7 @@ public final class LocalizedString implements Serializable, Comparable<Localized
         this.map = new Builder().with(locale, content).map;
     }
 
-    private LocalizedString(InternalMap map) {
+    protected LocalizedString(InternalMap map) {
         this.map = map;
     }
 

@@ -7,8 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Locale;
 
-import org.fenixedu.commons.i18n.I18N;
-import org.fenixedu.commons.i18n.LocalizedString;
 import org.junit.Test;
 
 public class LocalizedStringTest {
