@@ -6,11 +6,11 @@
     <parent>
         <groupId>org.fenixedu</groupId>
         <artifactId>fenixedu-project</artifactId>
-        <version>1.2.0</version>
+        <version>1.3.0</version>
     </parent>
 
     <artifactId>fenixedu-commons</artifactId>
-    <version>1.0.0-M2</version>
+    <version>1.0.0-M3</version>
     <name>IST -DSI Toolkit</name>
 
     <properties>
