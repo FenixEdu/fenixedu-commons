@@ -19,6 +19,7 @@
 package org.fenixedu.commons.i18n;
 
 import java.io.Serializable;
+import java.text.Collator;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -457,7 +458,7 @@ public final class LocalizedString implements Serializable, Comparable<Localized
 
     @Override
     public int compareTo(LocalizedString other) {
-        return getContent().compareTo(other.getContent());
+        return Collator.getInstance(I18N.getLocale()).compare(getContent(), other.getContent());
     }
 
     @Override
