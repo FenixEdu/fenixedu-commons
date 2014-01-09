@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -10,7 +9,7 @@
     </parent>
 
     <artifactId>fenixedu-commons</artifactId>
-    <version>1.0.0-M3</version>
+    <version>1.0.0</version>
     <name>FenixEdu Toolkit</name>
 
     <properties>
@@ -18,6 +17,13 @@
         <version.com.google.guava.guava>15.0</version.com.google.guava.guava>
         <version.javax.servlet.javax.servlet.api>3.0.1</version.javax.servlet.javax.servlet.api>
     </properties>
+
+    <scm>
+        <connection>scm:git:git@github.com:fenixedu/fenixedu-commons.git</connection>
+        <developerConnection>scm:git:git@github.com:fenixedu/fenixedu-commons.git</developerConnection>
+        <url>http://fenixedu.github.io/fenixedu-commons</url>
+        <tag>v1.0.0</tag>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -31,11 +37,11 @@
             <artifactId>guava</artifactId>
             <version>${version.com.google.guava.guava}</version>
         </dependency>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>${version.com.google.code.gson.gson}</version>
-		</dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${version.com.google.code.gson.gson}</version>
+        </dependency>
     </dependencies>
 
     <repositories>
