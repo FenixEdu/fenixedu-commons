@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>fenixedu-commons</artifactId>
-    <version>1.0.0-M3</version>
+    <version>1.0.0-RC1</version>
     <name>FenixEdu Toolkit</name>
 
     <properties>
