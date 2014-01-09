@@ -11,7 +11,7 @@
 
     <artifactId>fenixedu-commons</artifactId>
     <version>1.0.0-M3</version>
-    <name>IST -DSI Toolkit</name>
+    <name>FenixEdu Toolkit</name>
 
     <properties>
         <version.com.google.code.gson.gson>2.2.4</version.com.google.code.gson.gson>
