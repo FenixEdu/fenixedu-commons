@@ -139,7 +139,8 @@ public final class LocalizedString implements Serializable, Comparable<Localized
         public static LocalizedString fromJson(JsonElement json) {
             Builder builder = new Builder();
             for (Entry<String, JsonElement> entry : json.getAsJsonObject().entrySet()) {
-                builder = builder.with(Locale.forLanguageTag(entry.getKey()), entry.getValue().getAsString());
+                Locale locale = new Locale.Builder().setLanguageTag(entry.getKey()).build();
+                builder = builder.with(locale, entry.getValue().getAsString());
             }
             return builder.build();
         }
