@@ -410,8 +410,18 @@ public final class LocalizedString implements Serializable, Comparable<Localized
     }
 
     /**
-     * Accesses the translation corresponding to the thread's {@link Locale}, or the system's default {@link Locale} if the first
-     * is not found.
+     * Accesses a translation for this string.
+     * 
+     * The resulting locale is the best possible aproximation as follows:
+     * 
+     * <ul>
+     * <li>If there is a translation for the thread's {@link Locale} (as returned by {@link LocalizedString#getContent(Locale)}),
+     * return it.</li>
+     * <li>If there is a translation for the default {@link Locale} (as returned by {@link LocalizedString#getContent(Locale)}),
+     * return it.</li>
+     * <li>
+     * If there is any value in this {@link LocalizedString}, return it. Otherwise return null.</li>
+     * </ul>
      * 
      * @return the best possible translation, can be null.
      * @see {@link #getContent(Locale)}
@@ -419,7 +429,10 @@ public final class LocalizedString implements Serializable, Comparable<Localized
     public String getContent() {
         String text = getContent(I18N.getLocale());
         if (text == null) {
-            return getContent(Locale.getDefault());
+            text = getContent(Locale.getDefault());
+        }
+        if (text == null && !map.isEmpty()) {
+            text = map.values().iterator().next();
         }
         return text;
     }
