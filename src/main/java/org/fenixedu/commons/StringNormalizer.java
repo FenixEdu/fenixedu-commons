@@ -20,8 +20,13 @@ package org.fenixedu.commons;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class StringNormalizer {
+    private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
+    private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
+
     public static String normalizeAndRemoveAccents(String text) {
         return Normalizer.normalize(text, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
@@ -32,5 +37,12 @@ public class StringNormalizer {
 
     public static String normalize(String string) {
         return normalizePreservingCapitalizedLetters(string).toLowerCase();
+    }
+
+    public static String slugify(String name) {
+        String result = normalizePreservingCapitalizedLetters(normalizeAndRemoveAccents(name.trim()));
+        result = WHITESPACE.matcher(result).replaceAll("-");
+        result = NONLATIN.matcher(result).replaceAll("");
+        return result.toLowerCase(Locale.ENGLISH);
     }
 }

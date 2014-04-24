@@ -25,14 +25,21 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Locale;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class LocalizedStringTest {
     private static final Locale pt = Locale.forLanguageTag("pt");
     private static final Locale ptPT = Locale.forLanguageTag("pt-PT");
     private static final Locale enGB = Locale.forLanguageTag("en-GB");
+    private static final Locale enUS = Locale.forLanguageTag("en-US");
     private static final Locale esES = Locale.forLanguageTag("es-ES");
     private static final Locale ptBR = Locale.forLanguageTag("pt-BR");
+
+    @BeforeClass
+    public static void setupDefaultLocale() {
+        Locale.setDefault(enGB);
+    }
 
     @Test
     public void testBuilderCreation() {
@@ -135,5 +142,41 @@ public class LocalizedStringTest {
 
         LocalizedString hello2 = new LocalizedString.Builder().with(ptPT, "olá").with(ptBR, "oi").build();
         assertTrue(hello2.getContent(pt).equals("olá") || hello2.getContent(pt).equals("oi"));
+
+        LocalizedString hello3 = new LocalizedString.Builder().with(esES, "Hola").build();
+        assertNull(hello3.getContent(pt));
+
+        assertEquals(enGB, I18N.getLocale());
+        LocalizedString hello4 = new LocalizedString.Builder().with(enUS, "Hello").build();
+        assertEquals("Hello", hello4.getContent(enGB));
+        // Should also return Hello, as the current locale (enGB) is compatible with enUS, even though we are requesting pt.
+        assertEquals("Hello", hello4.getContent(pt));
+    }
+
+    @Test
+    public void testGetContent() {
+        assertEquals(enGB, I18N.getLocale());
+        LocalizedString hello1 = new LocalizedString.Builder().with(esES, "Hola").with(enGB, "Hello").build();
+        assertEquals("Hello", hello1.getContent());
+
+        I18N.setLocale(ptPT);
+        assertEquals(enGB, Locale.getDefault());
+        // Even though we are in 'pt-PT', the default locale is 'en-GB'
+        assertEquals("Hello", hello1.getContent());
+
+        I18N.setLocale(esES);
+        assertEquals("Hola", hello1.getContent());
+
+        LocalizedString hello2 = new LocalizedString.Builder().with(esES, "Hola").build();
+        assertEquals(esES, I18N.getLocale());
+        assertEquals("Hola", hello2.getContent());
+
+        I18N.setLocale(enGB);
+        assertEquals("Hola", hello2.getContent());
+
+        I18N.setLocale(null);
+        assertEquals("Hola", hello2.getContent());
+
+        assertNull(new LocalizedString().getContent());
     }
 }

@@ -86,19 +86,19 @@ public class ConfigurationInvocationHandler extends AbstractInvocationHandler {
             return null;
         }
         if (Boolean.class.isAssignableFrom(type)) {
-            value = Boolean.parseBoolean((String) value);
+            value = Boolean.parseBoolean(((String) value).trim());
         } else if (Byte.class.isAssignableFrom(type)) {
-            value = Byte.parseByte((String) value);
+            value = Byte.parseByte(((String) value).trim());
         } else if (Short.class.isAssignableFrom(type)) {
-            value = Short.parseShort((String) value);
+            value = Short.parseShort(((String) value).trim());
         } else if (Integer.class.isAssignableFrom(type)) {
-            value = Integer.parseInt((String) value);
+            value = Integer.parseInt(((String) value).trim());
         } else if (Long.class.isAssignableFrom(type)) {
-            value = Long.parseLong((String) value);
+            value = Long.parseLong(((String) value).trim());
         } else if (Float.class.isAssignableFrom(type)) {
-            value = Float.parseFloat((String) value);
+            value = Float.parseFloat(((String) value).trim());
         } else if (Double.class.isAssignableFrom(type)) {
-            value = Double.parseDouble((String) value);
+            value = Double.parseDouble(((String) value).trim());
         }
         return value;
     }

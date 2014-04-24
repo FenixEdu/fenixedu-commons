@@ -9,12 +9,12 @@
     </parent>
 
     <artifactId>fenixedu-commons</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>FenixEdu Toolkit</name>
 
     <properties>
         <version.com.google.code.gson.gson>2.2.4</version.com.google.code.gson.gson>
-        <version.com.google.guava.guava>15.0</version.com.google.guava.guava>
+        <version.com.google.guava.guava>17.0</version.com.google.guava.guava>
         <version.javax.servlet.javax.servlet.api>3.0.1</version.javax.servlet.javax.servlet.api>
     </properties>
 
@@ -22,7 +22,7 @@
         <connection>scm:git:git@github.com:fenixedu/fenixedu-commons.git</connection>
         <developerConnection>scm:git:git@github.com:fenixedu/fenixedu-commons.git</developerConnection>
         <url>http://fenixedu.github.io/fenixedu-commons</url>
-        <tag>v1.0.0</tag>
+        <tag>v1.0.1</tag>
     </scm>
 
     <dependencies>
