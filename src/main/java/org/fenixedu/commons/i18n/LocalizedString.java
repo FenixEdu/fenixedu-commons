@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -472,7 +471,8 @@ public final class LocalizedString implements Serializable, Comparable<Localized
 
     @Override
     public int compareTo(LocalizedString other) {
-        return Collator.getInstance(I18N.getLocale()).compare(getContent(), other.getContent());
+        return Collator.getInstance(I18N.getLocale()).compare(isEmpty() ? "" : getContent(),
+                other.isEmpty() ? "" : other.getContent());
     }
 
     @Override

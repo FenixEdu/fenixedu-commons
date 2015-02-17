@@ -179,4 +179,21 @@ public class LocalizedStringTest {
 
         assertNull(new LocalizedString().getContent());
     }
+
+    @Test
+    public void compareEmptyLocalizedString() {
+        LocalizedString hello = new LocalizedString.Builder().with(ptPT, "olá").with(enGB, "hello").build();
+        assertTrue(new LocalizedString().compareTo(hello) < 0);
+    }
+
+    @Test
+    public void compateWithEmptyLocalizedString() {
+        LocalizedString hello = new LocalizedString.Builder().with(ptPT, "olá").with(enGB, "hello").build();
+        assertTrue(hello.compareTo(new LocalizedString()) > 0);
+    }
+
+    @Test
+    public void compareEmptyLocalizedStrings() {
+        assertEquals(0, new LocalizedString().compareTo(new LocalizedString()));
+    }
 }
