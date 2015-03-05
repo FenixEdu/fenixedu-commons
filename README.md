@@ -13,7 +13,7 @@ To start using FenixEdu Commons you should take a look at our documentation site
 
 ##Issue Tracking
 
-Issue Tracking for the FenixEdu Commons project is done in the [FenixEdu JIRA](https://jira.fenixedu.org/browse/COMMONS).
+Issue Tracking for the FenixEdu Commons project is done in the [FenixEdu JIRA](https://jira.fenixedu.org/browse/CMN).
 
 ## Contribute
 
