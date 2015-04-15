@@ -85,19 +85,19 @@ public class ConfigurationInvocationHandler extends AbstractInvocationHandler {
         if (value == null) {
             return null;
         }
-        if (Boolean.class.isAssignableFrom(type)) {
+        if (Boolean.class.isAssignableFrom(type) || Boolean.TYPE.isAssignableFrom(type)) {
             value = Boolean.parseBoolean(((String) value).trim());
-        } else if (Byte.class.isAssignableFrom(type)) {
+        } else if (Byte.class.isAssignableFrom(type) || Byte.TYPE.isAssignableFrom(type)) {
             value = Byte.parseByte(((String) value).trim());
-        } else if (Short.class.isAssignableFrom(type)) {
+        } else if (Short.class.isAssignableFrom(type) || Short.TYPE.isAssignableFrom(type)) {
             value = Short.parseShort(((String) value).trim());
-        } else if (Integer.class.isAssignableFrom(type)) {
+        } else if (Integer.class.isAssignableFrom(type) || Integer.TYPE.isAssignableFrom(type)) {
             value = Integer.parseInt(((String) value).trim());
-        } else if (Long.class.isAssignableFrom(type)) {
+        } else if (Long.class.isAssignableFrom(type) || Long.TYPE.isAssignableFrom(type)) {
             value = Long.parseLong(((String) value).trim());
-        } else if (Float.class.isAssignableFrom(type)) {
+        } else if (Float.class.isAssignableFrom(type) || Float.TYPE.isAssignableFrom(type)) {
             value = Float.parseFloat(((String) value).trim());
-        } else if (Double.class.isAssignableFrom(type)) {
+        } else if (Double.class.isAssignableFrom(type) || Double.TYPE.isAssignableFrom(type)) {
             value = Double.parseDouble(((String) value).trim());
         }
         return value;
@@ -128,6 +128,7 @@ public class ConfigurationInvocationHandler extends AbstractInvocationHandler {
      * @param propertiesType class annotated with {@link ConfigurationManager}.
      * @return A proxy implementation of the given type.
      */
+    @SuppressWarnings("unchecked")
     public static <T> T getConfiguration(Class<T> propertiesType) {
         if (!configs.containsKey(propertiesType)) {
             configs.put(propertiesType, Reflection.newProxy(propertiesType, new ConfigurationInvocationHandler()));
