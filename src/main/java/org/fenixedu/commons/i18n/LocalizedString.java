@@ -24,7 +24,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -385,6 +390,72 @@ public final class LocalizedString implements Serializable, Comparable<Localized
      */
     public Set<Locale> getLocales() {
         return Collections.unmodifiableSet(map.keySet());
+    }
+
+    /**
+     * Performs the given action for every key-value pair in this localized string.
+     * 
+     * @param action
+     *            The action to be performed for each element
+     * @throws NullPointerException
+     *             If the provided action is {@code null}
+     */
+    public void forEach(BiConsumer<Locale, String> action) {
+        Objects.requireNonNull(action);
+        for (Entry<Locale, String> entry : map.entrySet()) {
+            action.accept(entry.getKey(), entry.getValue());
+        }
+    }
+
+    /**
+     * Returns whether any value in this string matches the given predicate.
+     * 
+     * May not evaluate all values, if not necessary to determine the result.
+     * 
+     * @param predicate
+     *            The predicate to apply to the values of this string.
+     * 
+     * @return {@code true} if any value of the string matches the provided
+     *         predicate, {@code false} otherwise.
+     */
+    public boolean anyMatch(Predicate<String> predicate) {
+        return map.values().stream().anyMatch(predicate);
+    }
+
+    /**
+     * Returns the translation for the given locale (as per {@link #getContent(Locale)}), returning the provided default value if
+     * no translation is found.
+     * 
+     * @param locale
+     *            The locale to fetch
+     * @param defaultValue
+     *            The value to provide if no translation is available for the given locale
+     * @return
+     *         The translation for the given locale, or the default value if not available
+     */
+    public String getOrDefault(Locale locale, String defaultValue) {
+        String value = getContent(locale);
+        return value == null ? defaultValue : value;
+    }
+
+    /**
+     * Returns a new {@link LocalizedString}, with the values provided by applying this string's values on the provided mapping
+     * function.
+     * 
+     * @param mappingFunction
+     *            The function to apply to every value of this string
+     * @return
+     *         A new string with the mapped values
+     * @throws NullPointerException
+     *             If the provided function is {@code null}.
+     */
+    public LocalizedString map(Function<String, String> mappingFunction) {
+        Objects.requireNonNull(mappingFunction);
+        Builder builder = builder();
+        for (Entry<Locale, String> entry : map.entrySet()) {
+            builder.with(entry.getKey(), mappingFunction.apply(entry.getValue()));
+        }
+        return builder.build();
     }
 
     /**

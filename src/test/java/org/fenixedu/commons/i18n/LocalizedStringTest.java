@@ -205,4 +205,39 @@ public class LocalizedStringTest {
         assertEquals("Hello World", helloworld.getContent(enGB));
         assertEquals("Mundo", helloworld.getContent(ptPT));
     }
+
+    @Test
+    public void testForEach() {
+        LocalizedString hello = new LocalizedString.Builder().with(ptPT, "olá").with(enGB, "hello").build();
+        StringBuilder builder = new StringBuilder();
+
+        hello.forEach((locale, value) -> builder.append(locale).append(value));
+
+        assertTrue(builder.toString().equals("pt_PToláen_GBhello") || builder.toString().equals("en_GBhellopt_PTolá"));
+    }
+
+    @Test
+    public void testAnyMatch() {
+        LocalizedString hello = new LocalizedString.Builder().with(ptPT, "olá").with(enGB, "hello").build();
+        LocalizedString empty = new LocalizedString();
+
+        assertEquals(true, hello.anyMatch(val -> val.contains("ll")));
+        assertEquals(false, hello.anyMatch(val -> val.contains("xpto")));
+        assertEquals(false, empty.anyMatch(val -> !val.isEmpty()));
+    }
+
+    @Test
+    public void testGetOrDefault() {
+        LocalizedString empty = new LocalizedString();
+        assertEquals(null, empty.getContent(enGB));
+        assertEquals("hello", empty.getOrDefault(enGB, "hello"));
+    }
+
+    @Test
+    public void testMap() {
+        LocalizedString hello = new LocalizedString.Builder().with(ptPT, "olá").with(enGB, "hello").build();
+        LocalizedString helloUpper = new LocalizedString.Builder().with(ptPT, "OLÁ").with(enGB, "HELLO").build();
+
+        assertEquals(helloUpper, hello.map(String::toUpperCase));
+    }
 }
