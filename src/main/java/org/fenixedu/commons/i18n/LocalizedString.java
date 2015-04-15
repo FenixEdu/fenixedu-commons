@@ -25,10 +25,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -130,7 +132,7 @@ public final class LocalizedString implements Serializable, Comparable<Localized
         public JsonElement json() {
             JsonObject json = new JsonObject();
             for (Locale locale : keySet()) {
-                json.addProperty(locale.toLanguageTag(), getContent(locale));
+                json.addProperty(locale.toLanguageTag(), get(locale));
             }
             return json;
         }
@@ -235,13 +237,9 @@ public final class LocalizedString implements Serializable, Comparable<Localized
          * @return The builder instance with the content changed.
          */
         public Builder append(LocalizedString string, String separator) {
-            Set<Locale> locales = new HashSet<>(map.keySet());
-            locales.addAll(string.map.keySet());
-            for (Locale locale : locales) {
-                map.put(locale,
-                        Strings.nullToEmpty(map.getContent(locale)) + separator
-                                + Strings.nullToEmpty(string.map.getContent(locale)));
-            }
+            Stream.concat(map.keySet().stream(), string.map.keySet().stream()).distinct().forEach(locale -> {
+                map.put(locale, Joiner.on(separator).skipNulls().join(map.get(locale), string.map.get(locale)));
+            });
             return this;
         }
 
@@ -264,7 +262,7 @@ public final class LocalizedString implements Serializable, Comparable<Localized
          */
         public Builder append(String string, String separator) {
             for (Locale locale : map.keySet()) {
-                map.put(locale, Strings.nullToEmpty(map.getContent(locale)) + separator + Strings.nullToEmpty(string));
+                map.put(locale, Joiner.on(separator).skipNulls().join(map.get(locale), string));
             }
             return this;
         }

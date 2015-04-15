@@ -196,4 +196,13 @@ public class LocalizedStringTest {
     public void compareEmptyLocalizedStrings() {
         assertEquals(0, new LocalizedString().compareTo(new LocalizedString()));
     }
+
+    @Test
+    public void appendShouldNotMixLangages() {
+        LocalizedString hello = new LocalizedString.Builder().with(enGB, "Hello").build();
+        LocalizedString world = new LocalizedString.Builder().with(enGB, "World").with(ptPT, "Mundo").build();
+        LocalizedString helloworld = hello.append(world, " ");
+        assertEquals("Hello World", helloworld.getContent(enGB));
+        assertEquals("Mundo", helloworld.getContent(ptPT));
+    }
 }
