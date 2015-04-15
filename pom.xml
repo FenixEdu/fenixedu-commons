@@ -16,6 +16,8 @@
         <version.com.google.code.gson.gson>2.2.4</version.com.google.code.gson.gson>
         <version.com.google.guava.guava>17.0</version.com.google.guava.guava>
         <version.javax.servlet.javax.servlet.api>3.0.1</version.javax.servlet.javax.servlet.api>
+        <version.joda.time>2.3</version.joda.time>
+        <version.org.apache.poi.poi>3.11</version.org.apache.poi.poi>
     </properties>
 
     <scm>
@@ -41,6 +43,17 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>${version.com.google.code.gson.gson}</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${version.joda.time}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${version.org.apache.poi.poi}</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
