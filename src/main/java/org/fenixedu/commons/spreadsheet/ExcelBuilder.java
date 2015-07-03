@@ -43,6 +43,7 @@ import org.fenixedu.commons.spreadsheet.styles.ComposedCellStyle;
 import org.fenixedu.commons.spreadsheet.styles.FontColor;
 import org.fenixedu.commons.spreadsheet.styles.FontHeight;
 import org.fenixedu.commons.spreadsheet.styles.FontWeight;
+import org.fenixedu.commons.spreadsheet.styles.StyleCache;
 import org.joda.time.DateTime;
 
 class ExcelBuilder extends AbstractSheetBuilder {
@@ -94,6 +95,8 @@ class ExcelBuilder extends AbstractSheetBuilder {
 
     private List<CellStyle> rowStyles = new ArrayList<CellStyle>(ROW_STYLES);
 
+    private StyleCache styleCache;
+
     int usefulAreaStart;
 
     int usefulAreaEnd;
@@ -125,7 +128,7 @@ class ExcelBuilder extends AbstractSheetBuilder {
         if (value != null && typeStyles.containsKey(value.getClass())) {
             style.merge(typeStyles.get(value.getClass()));
         }
-        setValue(book, cell, value, span, style.getStyle(book));
+        setValue(book, cell, value, span, styleCache.getStyle(style));
     }
 
     private void setValue(HSSFWorkbook book, HSSFCell cell, Object value, short span, HSSFCellStyle style) {
@@ -161,6 +164,7 @@ class ExcelBuilder extends AbstractSheetBuilder {
     public void build(Map<String, SheetData<?>> sheets, OutputStream output) throws IOException {
         try {
             HSSFWorkbook book = new HSSFWorkbook();
+            styleCache = new StyleCache(book);
             for (Entry<String, SheetData<?>> entry : sheets.entrySet()) {
                 final HSSFSheet sheet = book.createSheet(entry.getKey());
                 int rownum = 0;
@@ -172,7 +176,7 @@ class ExcelBuilder extends AbstractSheetBuilder {
                         colnum = 0;
                         final HSSFRow row = sheet.createRow(rownum++);
                         for (Cell cell : headerRow) {
-                            setValue(book, row.createCell(colnum++), cell.value, cell.span, headerStyle.getStyle(book));
+                            setValue(book, row.createCell(colnum++), cell.value, cell.span, styleCache.getStyle(headerStyle));
                             colnum = colnum + cell.span - 1;
                         }
                     }
