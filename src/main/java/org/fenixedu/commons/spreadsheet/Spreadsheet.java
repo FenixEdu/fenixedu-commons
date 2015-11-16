@@ -63,22 +63,22 @@ public class Spreadsheet {
         }
 
         public Row setCell(final String header, final String cellValue) {
-            cells.add(getHeaderIndex(header), cellValue);
+            setCell(getHeaderIndex(header), cellValue);
             return this;
         }
 
         public Row setCell(final String header, final Integer cellValue) {
-            cells.add(getHeaderIndex(header), (cellValue != null) ? cellValue.toString() : "");
+            setCell(getHeaderIndex(header), (cellValue != null) ? cellValue.toString() : "");
             return this;
         }
 
         public Row setCell(final String header, final Double cellValue) {
-            cells.add(getHeaderIndex(header), (cellValue != null) ? cellValue.toString() : "");
+            setCell(getHeaderIndex(header), (cellValue != null) ? cellValue.toString() : "");
             return this;
         }
 
         public Row setCell(final String header, final BigDecimal cellValue) {
-            cells.add(getHeaderIndex(header), (cellValue != null) ? cellValue.toPlainString() : "");
+            setCell(getHeaderIndex(header), (cellValue != null) ? cellValue.toPlainString() : "");
             return this;
         }
 
