@@ -18,20 +18,19 @@
  */
 package org.fenixedu.commons.configuration;
 
+import com.google.common.reflect.AbstractInvocationHandler;
+import com.google.common.reflect.Reflection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.reflect.AbstractInvocationHandler;
-import com.google.common.reflect.Reflection;
 
 public class ConfigurationInvocationHandler extends AbstractInvocationHandler {
     private static final Logger logger = LoggerFactory.getLogger(ConfigurationInvocationHandler.class);
@@ -43,15 +42,41 @@ public class ConfigurationInvocationHandler extends AbstractInvocationHandler {
     private static final Map<Class<?>, Object> configs = new HashMap<>();
 
     static {
+        boolean anythingLoaded = false;
         String propertiesFile = System.getProperty("CONFIGURATION_PROPERTIES", "/configuration.properties");
         try (InputStream inputStream = ConfigurationInvocationHandler.class.getResourceAsStream(propertiesFile)) {
             if (inputStream != null) {
                 properties.load(inputStream);
-            } else {
-                logger.warn("{} not found in classpath. Relying on default values", propertiesFile);
+                logger.info("Loaded properties from local configuration.properties file");
+                anythingLoaded = true;
             }
         } catch (IOException e) {
             throw new Error(propertiesFile + "could not be read.", e);
+        }
+        String bootstrapFile = System.getProperty("BOOTSTRAP_PROPERTIES", "/bootstrap.properties");
+        try (InputStream inputStream = ConfigurationInvocationHandler.class.getResourceAsStream(bootstrapFile)) {
+            if (inputStream != null) {
+                Properties bootstrap = new Properties();
+                bootstrap.load(inputStream);
+                String configServer = bootstrap.getProperty("spring.cloud.config.uri");
+                String applicationName = bootstrap.getProperty("spring.application.name");
+                String profiles = bootstrap.getProperty("spring.profiles.active", "development");
+                if (configServer != null) {
+                    URL configUrl = new URL(configServer + "/" + applicationName + "-" + profiles + ".properties");
+                    try (InputStream configStream = configUrl.openStream()) {
+                        properties.load(configStream);
+                        logger.info("Loaded configuration properties from configuration server");
+                        anythingLoaded = true;
+                    } catch (IOException e) {
+                        throw new Error("Error reading configuration server properties from " + configUrl.toString(), e);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new Error(bootstrapFile + "could not be read.", e);
+        }
+        if (!anythingLoaded) {
+            logger.warn("{} not found in classpath. Relying on default values", propertiesFile);
         }
     }
 
