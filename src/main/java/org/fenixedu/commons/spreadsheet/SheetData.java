@@ -37,11 +37,10 @@ public abstract class SheetData<Item> {
     private boolean isFooter;
     private List<Cell> current;
 
-    public SheetData(Iterable<Item> items) {
+    public SheetData(Iterator<Item> iterator) {
         isFooter = false;
         isHeader = true;
         headers.add(new ArrayList<Cell>());
-        Iterator<Item> iterator = items.iterator();
         Item curr = null;
         Item prev = null;
         boolean include = false;
@@ -67,6 +66,10 @@ public abstract class SheetData<Item> {
             matrix.add(current);
         }
         Collections.reverse(headers);
+    }
+
+    public SheetData(Iterable<Item> items) {
+        this(items.iterator());
     }
 
     /**
