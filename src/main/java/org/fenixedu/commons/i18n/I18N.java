@@ -75,7 +75,9 @@ public class I18N {
     public static void updateFromSession(HttpSession session) {
         if (session != null && session.getAttribute(LOCALE_KEY) != null) {
             locale.set((Locale) session.getAttribute(LOCALE_KEY));
-            logger.trace("Set thread's locale to: {}", locale.get().toString());
+            if (logger.isTraceEnabled()) {
+                logger.trace("Set thread's locale to: {}", locale.get().toString());
+            }
         } else {
             locale.set(null);
         }
