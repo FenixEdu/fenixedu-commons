@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.fenixedu</groupId>
+        <artifactId>fenixedu-commons</artifactId>
+        <version>DEV-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>fenixedu-commons-i18n</artifactId>
+    <name>FenixEdu Commons i18n</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${version.javax.servlet.javax.servlet.api}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${version.com.google.code.gson.gson}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${version.com.google.guava.guava}</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>fenixedu-maven-repository</id>
+            <url>https://repo.fenixedu.org/fenixedu-maven-repository</url>
+        </repository>
+    </repositories>
+</project>

@@ -3,18 +3,31 @@
 fenixedu-commons
 ===============
 
-Commons toolkit for FenixEdu projects
+This project aggregates a set of common useful utilities, tools and libraries that will 
+help to simplify your code or avoid repeating typical lines. This project is broken up 
+into smaller modules you should incorporate individually into your project depending on 
+your needs. In general, it is not useful to incorporate each fenixedu-commons module, 
+because they have a broad range, from internationalization tools to spreadsheet processing.
 
-## Getting Started
 
-To start using FenixEdu Commons you should take a look at our documentation site:
+## fenixedu-commons-stream
 
-[https://confluence.fenixedu.org/display/COMMONS/Welcome](https://confluence.fenixedu.org/display/COMMONS/Welcome)
+A set of methods to assist in converting streams into json arrays and to transform objects
+into json objects.
 
-##Issue Tracking
 
-Issue Tracking for the FenixEdu Commons project is done in the [FenixEdu JIRA](https://jira.fenixedu.org/browse/CMN).
+## fenixedu-commons-i18n
 
-## Contribute
+An implementation of a LocalizedString, in other words a i18n String object. This is very 
+usefull for applications that need to represent the same information in multiple languages.
 
-FenixEdu Commons is open sourced under the LGPL 3. We welcome interest in the project and are open to your contributions
+
+## fenixedu-commons-configuration
+
+A tool and interfaces to help bootstrap a projects configuration using annotations.
+
+
+## fenixedu-commons-spreadsheet
+
+A tool to simplify the construction of spreadsheets. The output can by set o Excel and/or
+CSV, TSV, ...

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -9,8 +11,9 @@
     </parent>
 
     <artifactId>fenixedu-commons</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
-    <name>FenixEdu Toolkit</name>
+    <version>DEV-SNAPSHOT</version>
+    <name>FenixEdu Commons</name>
+    <packaging>pom</packaging>
 
     <properties>
         <version.com.google.code.gson.gson>2.2.4</version.com.google.code.gson.gson>
@@ -27,35 +30,12 @@
         <tag>HEAD</tag>
     </scm>
 
-    <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${version.javax.servlet.javax.servlet.api}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${version.com.google.guava.guava}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${version.com.google.code.gson.gson}</version>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${version.joda.time}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${version.org.apache.poi.poi}</version>
-            <optional>true</optional>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>fenixedu-commons-stream</module>
+        <module>fenixedu-commons-i18n</module>
+        <module>fenixedu-commons-configuration</module>
+        <module>fenixedu-commons-spreadsheet</module>
+    </modules>
 
     <repositories>
         <repository>

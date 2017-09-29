@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.fenixedu</groupId>
+        <artifactId>fenixedu-commons</artifactId>
+        <version>DEV-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>fenixedu-commons-spreadsheet</artifactId>
+    <name>FenixEdu Commons SpreadSheet</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.fenixedu</groupId>
+            <artifactId>fenixedu-commons-i18n</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${version.joda.time}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${version.org.apache.poi.poi}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>fenixedu-maven-repository</id>
+            <url>https://repo.fenixedu.org/fenixedu-maven-repository</url>
+        </repository>
+    </repositories>
+</project>
