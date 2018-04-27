@@ -17,7 +17,7 @@
         <version.com.google.guava.guava>17.0</version.com.google.guava.guava>
         <version.javax.servlet.javax.servlet.api>3.0.1</version.javax.servlet.javax.servlet.api>
         <version.joda.time>2.3</version.joda.time>
-        <version.org.apache.poi.poi>3.11</version.org.apache.poi.poi>
+        <version.org.apache.poi.poi>3.17</version.org.apache.poi.poi>
     </properties>
 
     <scm>
@@ -52,6 +52,12 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
+            <version>${version.org.apache.poi.poi}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
             <version>${version.org.apache.poi.poi}</version>
             <optional>true</optional>
         </dependency>

@@ -3,12 +3,13 @@ package org.fenixedu.commons.spreadsheet.styles;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 
 public class CellVerticalAlignment extends CellStyle {
 
-    private final short align;
+    private final VerticalAlignment align;
 
-    public CellVerticalAlignment(short align) {
+    public CellVerticalAlignment(VerticalAlignment align) {
         this.align = align;
     }
 
@@ -28,6 +29,6 @@ public class CellVerticalAlignment extends CellStyle {
 
     @Override
     public int hashCode() {
-        return align;
+        return align.hashCode();
     }
 }

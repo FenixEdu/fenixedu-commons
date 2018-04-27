@@ -3,15 +3,18 @@ package org.fenixedu.commons.spreadsheet.styles;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.BorderStyle;
+
+import com.google.common.base.Objects;
 
 public class CellBorder extends CellStyle {
 
-    private final short borderBottom;
-    private final short borderLeft;
-    private final short borderRight;
-    private final short borderTop;
+    private final BorderStyle borderBottom;
+    private final BorderStyle borderLeft;
+    private final BorderStyle borderRight;
+    private final BorderStyle borderTop;
 
-    public CellBorder(short border) {
+    public CellBorder(BorderStyle border) {
         this.borderBottom = border;
         this.borderLeft = border;
         this.borderRight = border;
@@ -38,6 +41,6 @@ public class CellBorder extends CellStyle {
 
     @Override
     public int hashCode() {
-        return (borderBottom << 24) & (borderTop << 16) & (borderLeft << 8) & borderRight;
+        return Objects.hashCode(borderBottom, borderLeft, borderRight, borderTop);
     }
 }
