@@ -202,7 +202,9 @@ public final class LocalizedString implements Serializable, Comparable<Localized
                 throw new RuntimeException("Attempted adding null locale to LocalizedString");
             }
             if (Strings.isNullOrEmpty(content)) {
-                logger.debug("adding null content for locale: {} to {}", locale.toLanguageTag(), this.toString());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("adding null content for locale: {} to {}", locale.toLanguageTag(), this.toString());
+                }
                 return this;
             }
             map.put(locale, content);
