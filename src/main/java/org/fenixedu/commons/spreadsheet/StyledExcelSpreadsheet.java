@@ -7,7 +7,9 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.CellReference;
-import org.apache.poi.hssf.util.HSSFCellUtil;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.util.CellUtil;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
@@ -185,7 +187,7 @@ public class StyledExcelSpreadsheet {
         addCell(value, getDefaultExcelStyle(value), getNextWritableCell(), wrap);
     }
 
-    public void addCell(Object value, HSSFCellStyle newStyle) {
+    public void addCell(Object value, CellStyle newStyle) {
         addCell(value, newStyle, getNextWritableCell());
     }
 
@@ -197,11 +199,11 @@ public class StyledExcelSpreadsheet {
         addCell(value, getDefaultExcelStyle(value), columnNumber, wrap);
     }
 
-    public void addCell(Object value, HSSFCellStyle newStyle, int columnNumber) {
+    public void addCell(Object value, CellStyle newStyle, int columnNumber) {
         addCell(value, newStyle, columnNumber, wrapText);
     }
 
-    private void addCell(Object value, HSSFCellStyle newStyle, int columnNumber, boolean wrap) {
+    private void addCell(Object value, CellStyle newStyle, int columnNumber, boolean wrap) {
         if (value == null) {
             value = EMPTY_STRING;
         }
@@ -216,21 +218,21 @@ public class StyledExcelSpreadsheet {
         }
     }
 
-    private void addCell(String value, HSSFCellStyle newStyle, int columnNumber, boolean wrap) {
+    private void addCell(String value, CellStyle newStyle, int columnNumber, boolean wrap) {
         HSSFRow currentRow = getRow();
         HSSFCell cell = currentRow.createCell(columnNumber);
         cell.setCellValue(value);
         cell.setCellStyle(getExcelStyle(newStyle, wrap));
     }
 
-    private void addCell(Double value, HSSFCellStyle newStyle, int columnNumber, boolean wrap) {
+    private void addCell(Double value, CellStyle newStyle, int columnNumber, boolean wrap) {
         HSSFRow currentRow = getRow();
         HSSFCell cell = currentRow.createCell(columnNumber);
         cell.setCellValue(value);
         cell.setCellStyle(getExcelStyle(newStyle, wrap));
     }
 
-    private void addCell(Integer value, HSSFCellStyle newStyle, int columnNumber, boolean wrap) {
+    private void addCell(Integer value, CellStyle newStyle, int columnNumber, boolean wrap) {
         HSSFRow currentRow = getRow();
         HSSFCell cell = currentRow.createCell(columnNumber);
         cell.setCellValue(value);
@@ -310,11 +312,11 @@ public class StyledExcelSpreadsheet {
     }
 
     protected void setCellBorder(HSSFCell cell) {
-        final short borderProperty = HSSFCellStyle.BORDER_THIN;
-        HSSFCellUtil.setCellStyleProperty(cell, workbook, "borderLeft", borderProperty);
-        HSSFCellUtil.setCellStyleProperty(cell, workbook, "borderRight", borderProperty);
-        HSSFCellUtil.setCellStyleProperty(cell, workbook, "borderTop", borderProperty);
-        HSSFCellUtil.setCellStyleProperty(cell, workbook, "borderBottom", borderProperty);
+        final BorderStyle borderProperty = BorderStyle.THIN;
+        CellUtil.setCellStyleProperty(cell, "borderLeft", borderProperty);
+        CellUtil.setCellStyleProperty(cell, "borderRight", borderProperty);
+        CellUtil.setCellStyleProperty(cell, "borderTop", borderProperty);
+        CellUtil.setCellStyleProperty(cell, "borderBottom", borderProperty);
     }
 
     public void setRegionBorder(int firstRow, int lastRow, int firstColumn, int lastColumn) {
@@ -347,14 +349,14 @@ public class StyledExcelSpreadsheet {
         getSheet().setMargin(HSSFSheet.RightMargin, 0.10);
     }
 
-    private HSSFCellStyle getExcelStyle(HSSFCellStyle style, boolean wrap) {
+    private CellStyle getExcelStyle(CellStyle style, boolean wrap) {
         if (!wrap) {
             style.setWrapText(false);
         }
         return style;
     }
 
-    private HSSFCellStyle getDefaultExcelStyle(Object value) {
+    private CellStyle getDefaultExcelStyle(Object value) {
         if (value instanceof Integer) {
             return getExcelStyle(getExcelStyle().getIntegerStyle(), wrapText);
         } else if (value instanceof Double) {

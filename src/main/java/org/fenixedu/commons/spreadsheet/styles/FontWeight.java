@@ -14,7 +14,7 @@ public class FontWeight extends CellStyle {
 
     @Override
     protected void appendToStyle(HSSFWorkbook book, HSSFCellStyle style, HSSFFont font) {
-        font.setBoldweight(boldweight);
+        font.setBold(true);
     }
 
     @Override

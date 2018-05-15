@@ -2,36 +2,40 @@ package org.fenixedu.commons.spreadsheet;
 
 import java.io.Serializable;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
 
 public class ExcelStyle implements Serializable {
 
     private static final long serialVersionUID = 6778686809629990612L;
 
-    private HSSFCellStyle titleStyle;
+    private CellStyle titleStyle;
 
-    private HSSFCellStyle headerStyle;
+    private CellStyle headerStyle;
 
-    private HSSFCellStyle verticalHeaderStyle;
+    private CellStyle verticalHeaderStyle;
 
-    private HSSFCellStyle stringStyle;
+    private CellStyle stringStyle;
 
-    private HSSFCellStyle doubleStyle;
+    private CellStyle doubleStyle;
 
-    private HSSFCellStyle doubleNegativeStyle;
+    private CellStyle doubleNegativeStyle;
 
-    private HSSFCellStyle integerStyle;
+    private CellStyle integerStyle;
 
-    private HSSFCellStyle labelStyle;
+    private CellStyle labelStyle;
 
-    private HSSFCellStyle valueStyle;
+    private CellStyle valueStyle;
 
-    private HSSFCellStyle redValueStyle;
+    private CellStyle redValueStyle;
 
-    public ExcelStyle(HSSFWorkbook wb) {
+    public ExcelStyle(Workbook wb) {
         setTitleStyle(wb);
         setHeaderStyle(wb);
         setVerticalHeaderStyle(wb);
@@ -44,167 +48,167 @@ public class ExcelStyle implements Serializable {
         setRedValueStyle(wb);
     }
 
-    private void setTitleStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        HSSFFont font = wb.createFont();
+    private void setTitleStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
         font.setColor(HSSFColor.BLACK.index);
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        font.setBold(true);
         font.setFontHeightInPoints((short) 10);
         style.setFont(font);
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
         titleStyle = style;
     }
 
-    private void setHeaderStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        HSSFFont font = wb.createFont();
+    private void setHeaderStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
         font.setColor(HSSFColor.BLACK.index);
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        font.setBold(true);
         font.setFontHeightInPoints((short) 8);
         style.setFont(font);
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
         style.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
-        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
         style.setWrapText(true);
         headerStyle = style;
     }
 
-    private void setVerticalHeaderStyle(HSSFWorkbook wb) {
+    private void setVerticalHeaderStyle(Workbook wb) {
         verticalHeaderStyle = wb.createCellStyle();
-        HSSFFont font = wb.createFont();
+        Font font = wb.createFont();
         font.setColor(HSSFColor.BLACK.index);
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        font.setBold(true);
         font.setFontHeightInPoints((short) 8);
         verticalHeaderStyle.setFont(font);
-        verticalHeaderStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        verticalHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
         verticalHeaderStyle.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
-        verticalHeaderStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-        verticalHeaderStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        verticalHeaderStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        verticalHeaderStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        verticalHeaderStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        verticalHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        verticalHeaderStyle.setBorderLeft(BorderStyle.THIN);
+        verticalHeaderStyle.setBorderRight(BorderStyle.THIN);
+        verticalHeaderStyle.setBorderBottom(BorderStyle.THIN);
+        verticalHeaderStyle.setBorderTop(BorderStyle.THIN);
         verticalHeaderStyle.setRotation((short) 90);
     }
 
-    private void setStringStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        HSSFFont font = wb.createFont();
+    private void setStringStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
         font.setColor(HSSFColor.BLACK.index);
         font.setFontHeightInPoints((short) 8);
         style.setFont(font);
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
         stringStyle = style;
     }
 
-    private void setDoubleStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        HSSFFont font = wb.createFont();
+    private void setDoubleStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
         font.setColor(HSSFColor.BLACK.index);
         font.setFontHeightInPoints((short) 8);
         style.setFont(font);
-        style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+        style.setAlignment(HorizontalAlignment.RIGHT);
         style.setDataFormat(wb.createDataFormat().getFormat("#,##0.00"));
         doubleStyle = style;
     }
 
-    private void setDoubleNegativeStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        HSSFFont font = wb.createFont();
+    private void setDoubleNegativeStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
         font.setColor(HSSFColor.BLACK.index);
         font.setFontHeightInPoints((short) 8);
         style.setFont(font);
-        style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+        style.setAlignment(HorizontalAlignment.RIGHT);
         style.setDataFormat(wb.createDataFormat().getFormat("#,##0.00"));
         font.setColor(HSSFColor.RED.index);
         doubleNegativeStyle = style;
     }
 
-    private void setIntegerStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        HSSFFont font = wb.createFont();
+    private void setIntegerStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
         font.setColor(HSSFColor.BLACK.index);
         font.setFontHeightInPoints((short) 8);
         style.setFont(font);
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
         style.setDataFormat(wb.createDataFormat().getFormat("0"));
         integerStyle = style;
     }
 
-    private void setLabelStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        HSSFFont font = wb.createFont();
+    private void setLabelStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
         font.setColor(HSSFColor.BLACK.index);
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        font.setBold(true);
         font.setFontHeightInPoints((short) 8);
         style.setFont(font);
-        style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+        style.setAlignment(HorizontalAlignment.LEFT);
         labelStyle = style;
     }
 
-    private void setValueStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        HSSFFont font = wb.createFont();
+    private void setValueStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
         font.setColor(HSSFColor.BLACK.index);
         font.setFontHeightInPoints((short) 8);
         style.setFont(font);
-        style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+        style.setAlignment(HorizontalAlignment.LEFT);
         style.setWrapText(true);
         valueStyle = style;
     }
 
-    private void setRedValueStyle(HSSFWorkbook wb) {
-        HSSFCellStyle style = wb.createCellStyle();
-        HSSFFont font = wb.createFont();
+    private void setRedValueStyle(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
         font.setColor(HSSFColor.RED.index);
         font.setFontHeightInPoints((short) 8);
         style.setFont(font);
-        style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+        style.setAlignment(HorizontalAlignment.LEFT);
         style.setWrapText(true);
         redValueStyle = style;
     }
 
-    public HSSFCellStyle getDoubleNegativeStyle() {
+    public CellStyle getDoubleNegativeStyle() {
         return doubleNegativeStyle;
     }
 
-    public HSSFCellStyle getDoubleStyle() {
+    public CellStyle getDoubleStyle() {
         return doubleStyle;
     }
 
-    public HSSFCellStyle getHeaderStyle() {
+    public CellStyle getHeaderStyle() {
         return headerStyle;
     }
 
-    public HSSFCellStyle getIntegerStyle() {
+    public CellStyle getIntegerStyle() {
         return integerStyle;
     }
 
-    public HSSFCellStyle getLabelStyle() {
+    public CellStyle getLabelStyle() {
         return labelStyle;
     }
 
-    public HSSFCellStyle getStringStyle() {
+    public CellStyle getStringStyle() {
         return stringStyle;
     }
 
-    public HSSFCellStyle getTitleStyle() {
+    public CellStyle getTitleStyle() {
         return titleStyle;
     }
 
-    public HSSFCellStyle getValueStyle() {
+    public CellStyle getValueStyle() {
         return valueStyle;
     }
 
-    public HSSFCellStyle getRedValueStyle() {
+    public CellStyle getRedValueStyle() {
         return redValueStyle;
     }
 
-    public HSSFCellStyle getVerticalHeaderStyle() {
+    public CellStyle getVerticalHeaderStyle() {
         return verticalHeaderStyle;
     }
 }

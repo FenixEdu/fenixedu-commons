@@ -268,6 +268,10 @@ public class Spreadsheet {
         new SpreadsheetXLSExporter().exportToXLSSheet(this, outputStream);
     }
 
+    public void exportToXLSXSheet(final OutputStream outputStream) throws IOException {
+        new SpreadsheetXLSExporter().exportToXLSXSheet(this, outputStream);
+    }
+
     public void exportToXLSSheet(final File file) throws IOException {
         new SpreadsheetXLSExporter().exportToXLSSheet(this, file);
     }

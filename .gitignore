@@ -13,3 +13,5 @@
 target/
 bin/
 
+# IntelliJ
+*.iml

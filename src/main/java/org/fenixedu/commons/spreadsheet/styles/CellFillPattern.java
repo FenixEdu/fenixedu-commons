@@ -3,12 +3,13 @@ package org.fenixedu.commons.spreadsheet.styles;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.FillPatternType;
 
 public class CellFillPattern extends CellStyle {
 
-    private final short pattern;
+    private final FillPatternType pattern;
 
-    public CellFillPattern(short pattern) {
+    public CellFillPattern(FillPatternType pattern) {
         this.pattern = pattern;
     }
 
@@ -28,6 +29,6 @@ public class CellFillPattern extends CellStyle {
 
     @Override
     public int hashCode() {
-        return pattern;
+        return pattern.hashCode();
     }
 }
