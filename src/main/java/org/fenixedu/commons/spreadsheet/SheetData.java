@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.fenixedu.commons.spreadsheet.AbstractSheetBuilder;
+
 /**
  * Representation of a sheet of data. Override this class (suggestion: use
  * anonymous classes) to define the contents of the sheet. Overriders must
@@ -13,12 +15,13 @@ import java.util.List;
  * turn calls the {@link #makeLine(Object)}. Optionally you may override
  * the {@link #filter(Object)} method to filter any undesirable items present
  * in the list.
- * 
+ *
  * @author Pedro Santos (pedro.miguel.santos@ist.utl.pt), Gil Lacerda (gil.lacerda@tecnico.ulisboa.pt)
- * 
+ *
  * @param <Item>
  *            Type of object that will be used to populate cells.
  */
+
 public abstract class SheetData<Item> {
     public static class Cell {
         Object value;
@@ -28,55 +31,60 @@ public abstract class SheetData<Item> {
             this.value = value;
             this.span = span;
         }
+
+        public Object getValue() {
+            return value;
+        }
+
+        public short getSpan() {
+            return span;
+        }
     }
 
-    final List<List<Cell>> headers = new ArrayList<List<Cell>>();
-    final List<List<Cell>> matrix = new ArrayList<List<Cell>>();
-    final List<Cell> footer = new ArrayList<Cell>();
+    private Iterable<Item> items;
+
+    private List<List<Cell>> headers;
+    private List<List<Cell>> matrix;
+    private List<Cell> footer;
     private boolean isHeader;
     private boolean isFooter;
     private List<Cell> current;
 
-    public SheetData(Iterator<Item> iterator) {
-        isFooter = false;
-        isHeader = true;
-        headers.add(new ArrayList<Cell>());
-        Item curr = null;
-        Item prev = null;
-        boolean include = false;
-        while (iterator.hasNext()) {
-            do {
-                curr = iterator.next();
-                include = filter(curr);
-            } while (!include && iterator.hasNext());
-            if (include) {
-                if (prev != null) {
-                    current = new ArrayList<Cell>();
-                    makeLine(prev);
-                    matrix.add(current);
-                    isHeader = false;
-                }
-                prev = curr;
-            }
-        }
-        if (prev != null) {
-            isFooter = true;
-            current = new ArrayList<Cell>();
-            makeLine(prev);
-            matrix.add(current);
-        }
-        Collections.reverse(headers);
+    public SheetData(Iterable<Item> items) {
+        this.items = items;
     }
 
-    public SheetData(Iterable<Item> items) {
-        this(items.iterator());
+    public void write(AbstractSheetBuilder builder) {
+        this.headers = new ArrayList<List<Cell>>();
+        this.matrix = new ArrayList<List<Cell>>();
+        this.footer = new ArrayList<Cell>();
+
+        isHeader = true;
+        headers.add(new ArrayList<Cell>());
+        Iterator<Item> iterator = items.iterator();
+
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+            if (filter(item)) {
+                current = new ArrayList<Cell>();
+                isFooter = !iterator.hasNext();
+                makeLine(item);
+                if (isHeader) {
+                    Collections.reverse(headers);
+                    builder.addHeaders(this, headers);
+                }
+                builder.addRow(this, current);
+                isHeader = false;
+            }
+        }
+        builder.addFooter(this);
     }
 
     /**
      * Populates a single line of the sheet by calls on the addCell(...)
      * methods. Headers are optional, if you want them use the addCell methods
      * that accept headers.
-     * 
+     *
      * @param item
      *            the object that will source the current sheet line.
      */
@@ -85,9 +93,11 @@ public abstract class SheetData<Item> {
     /**
      * Analyzes an item and returns a boolean remarking whether the item is
      * to be included in the current sheet.
-     * 
+     *
      * @param item
      *            the object to be analyzed.
+     * @return whether the item is
+     *         to be included in the current sheet.
      */
     protected boolean filter(Item item) {
         return true;
@@ -127,12 +137,13 @@ public abstract class SheetData<Item> {
         }
     }
 
-    protected void addCell(Object upHeader, short upSpan, Object header, short span, Object value, short valueSpan,
-            Object footer, short footerSpan) {
+    protected void addCell(Object upHeader, short upSpan, Object header, short span, Object value, short valueSpan, Object footer,
+            short footerSpan) {
         addCell(new Object[] { upHeader, header }, new short[] { upSpan, span }, value, valueSpan, footer, footerSpan);
     }
 
-    protected void addCell(Object[] headers, short[] headerSpans, Object value, short valueSpan, Object footer, short footerSpan) {
+    protected void addCell(Object[] headers, short[] headerSpans, Object value, short valueSpan, Object footer,
+            short footerSpan) {
         if (isHeader) {
             addHeader(headers, headerSpans);
         }
@@ -155,7 +166,7 @@ public abstract class SheetData<Item> {
             List<Cell> headerRow = this.headers.get(headers.length - i - 1);
             int column = 0;
             for (Cell cell : headerRow) {
-                column += cell.span;
+                column += cell.getSpan();
             }
             if (currentColumn - column > 0) {
                 headerRow.add(new Cell("", (short) (currentColumn - column)));
@@ -169,7 +180,7 @@ public abstract class SheetData<Item> {
     }
 
     private void addFooter(Object footer, short hspan) {
-        this.footer.add(new Cell(footer, hspan));
+        this.getFooter().add(new Cell(footer, hspan));
     }
 
     protected void addCell(Object value) {
@@ -180,14 +191,27 @@ public abstract class SheetData<Item> {
         this.current.add(new Cell(value, hspan));
     }
 
-    public boolean hasFooter() {
-        if (!footer.isEmpty()) {
-            for (Cell cell : footer) {
-                if (cell.value != null) {
+    protected boolean hasFooter() {
+        if (!getFooter().isEmpty()) {
+            for (Cell cell : getFooter()) {
+                if (cell.getValue() != null) {
                     return true;
                 }
             }
         }
         return false;
     }
+
+    public List<List<Cell>> getHeaders() {
+        return headers;
+    }
+
+    public List<List<Cell>> getMatrix() {
+        return matrix;
+    }
+
+    public List<Cell> getFooter() {
+        return footer;
+    }
+
 }

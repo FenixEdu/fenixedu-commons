@@ -3,18 +3,18 @@ package org.fenixedu.commons.spreadsheet.styles;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Workbook;
 
-public class ComposedCellStyle extends CellStyle {
-    private final List<CellStyle> parts = new ArrayList<CellStyle>();
+public class ComposedCellStyle extends SpreadsheetCellStyle {
+    private final List<SpreadsheetCellStyle> parts = new ArrayList<SpreadsheetCellStyle>();
 
     @Override
-    public HSSFCellStyle getStyle(HSSFWorkbook book) {
-        HSSFCellStyle style = book.createCellStyle();
-        HSSFFont font = book.createFont();
-        for (CellStyle part : parts) {
+    public CellStyle getStyle(Workbook book) {
+        CellStyle style = book.createCellStyle();
+        Font font = book.createFont();
+        for (SpreadsheetCellStyle part : parts) {
             part.appendToStyle(book, style, font);
         }
         style.setFont(font);
@@ -22,11 +22,11 @@ public class ComposedCellStyle extends CellStyle {
     }
 
     @Override
-    protected void appendToStyle(HSSFWorkbook book, HSSFCellStyle style, HSSFFont font) {
+    protected void appendToStyle(Workbook book, CellStyle style, Font font) {
         // Nothing to do.
     }
 
-    public CellStyle merge(CellStyle style) {
+    public SpreadsheetCellStyle merge(SpreadsheetCellStyle style) {
         parts.add(style);
         return this;
     }
@@ -50,7 +50,7 @@ public class ComposedCellStyle extends CellStyle {
     @Override
     public int hashCode() {
         int result = 0;
-        for (CellStyle part : parts) {
+        for (SpreadsheetCellStyle part : parts) {
             result += part.hashCode();
         }
         return result;

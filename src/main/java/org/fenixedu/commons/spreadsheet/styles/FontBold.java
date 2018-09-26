@@ -2,20 +2,13 @@ package org.fenixedu.commons.spreadsheet.styles;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Workbook;
 
-public class FontColor extends SpreadsheetCellStyle {
-
-    private final IndexedColors color;
-
-    public FontColor(IndexedColors color) {
-        this.color = color;
-    }
+public class FontBold extends SpreadsheetCellStyle {
 
     @Override
     protected void appendToStyle(Workbook book, CellStyle style, Font font) {
-        font.setColor(color.getIndex());
+        font.setBold(true);
     }
 
     @Override
@@ -29,15 +22,11 @@ public class FontColor extends SpreadsheetCellStyle {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof FontColor) {
-            FontColor fontColor = (FontColor) obj;
-            return color.equals(fontColor.color);
-        }
-        return false;
+        return obj instanceof FontBold;
     }
 
     @Override
     public int hashCode() {
-        return color.hashCode();
+        return 1;
     }
 }

@@ -3,7 +3,6 @@ package org.fenixedu.commons.spreadsheet;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,27 +12,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.fenixedu.commons.spreadsheet.SheetData.Cell;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.fenixedu.commons.spreadsheet.converters.CellConverter;
 import org.fenixedu.commons.spreadsheet.converters.excel.BigDecimalCellConverter;
 import org.fenixedu.commons.spreadsheet.converters.excel.DateTimeCellConverter;
 import org.fenixedu.commons.spreadsheet.converters.excel.IntegerCellConverter;
 import org.fenixedu.commons.spreadsheet.converters.excel.LocalDateCellConverter;
-import org.fenixedu.commons.spreadsheet.converters.excel.YearMonthDayCellConverter;
 import org.fenixedu.commons.spreadsheet.styles.CellAlignment;
 import org.fenixedu.commons.spreadsheet.styles.CellBorder;
 import org.fenixedu.commons.spreadsheet.styles.CellDateFormat;
@@ -48,14 +45,16 @@ import org.fenixedu.commons.spreadsheet.styles.FontHeight;
 import org.fenixedu.commons.spreadsheet.styles.SpreadsheetCellStyle;
 import org.fenixedu.commons.spreadsheet.styles.StyleCache;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.YearMonthDay;
 
-class ExcelBuilder extends AbstractSheetBuilder {
-    protected HSSFWorkbook book;
+class DocxBuilder extends AbstractSheetBuilder {
+    protected SXSSFWorkbook book;
 
-    public ExcelBuilder(OutputStream outputStream) {
+    public DocxBuilder(OutputStream outputStream) {
         super(outputStream);
-        this.book = new HSSFWorkbook();
+        this.book = new SXSSFWorkbook();
+        this.book.setCompressTempFiles(true);
         this.styleCache = new StyleCache(this.book);
     }
 
@@ -66,7 +65,6 @@ class ExcelBuilder extends AbstractSheetBuilder {
         BASE_CONVERTERS = new HashMap<Class<?>, CellConverter>();
         BASE_CONVERTERS.put(Integer.class, new IntegerCellConverter());
         BASE_CONVERTERS.put(DateTime.class, new DateTimeCellConverter());
-        BASE_CONVERTERS.put(YearMonthDay.class, new YearMonthDayCellConverter());
         BASE_CONVERTERS.put(LocalDate.class, new LocalDateCellConverter());
         BASE_CONVERTERS.put(BigDecimal.class, new BigDecimalCellConverter());
     }
@@ -86,11 +84,14 @@ class ExcelBuilder extends AbstractSheetBuilder {
 
     private static SpreadsheetCellStyle HEADER_STYLE = new ComposedCellStyle() {
         {
-            merge(new FontColor(IndexedColors.BLACK));
+            IndexedColors black = IndexedColors.BLACK;
+            IndexedColors gray = IndexedColors.GREY_25_PERCENT;
+
+            merge(new FontColor(black));
             merge(new FontBold());
             merge(new FontHeight((short) 8));
             merge(new CellAlignment(HorizontalAlignment.CENTER));
-            merge(new CellFillForegroundColor(IndexedColors.GREY_25_PERCENT));
+            merge(new CellFillForegroundColor(gray));
             merge(new CellFillPattern(FillPatternType.SOLID_FOREGROUND));
             merge(new CellBorder(BorderStyle.THIN));
             merge(new CellVerticalAlignment(VerticalAlignment.CENTER));
@@ -110,9 +111,13 @@ class ExcelBuilder extends AbstractSheetBuilder {
 
     private StyleCache styleCache;
 
+    int usefulAreaStart;
+
+    int usefulAreaEnd;
+
     private int colnum;
 
-    private HSSFSheet sheet;
+    private Sheet sheet;
 
     protected void setHeaderStyle(SpreadsheetCellStyle style) {
         headerStyle = style;
@@ -133,7 +138,7 @@ class ExcelBuilder extends AbstractSheetBuilder {
         rowStyles = Arrays.asList(styles);
     }
 
-    protected void setValue(HSSFWorkbook book, HSSFCell cell, Object value, short span) {
+    protected void setValue(Workbook book, Cell cell, Object value, short span) {
         ComposedCellStyle style = new ComposedCellStyle();
         if (!rowStyles.isEmpty()) {
             style.merge(rowStyles.get(cell.getRowIndex() % rowStyles.size()));
@@ -144,7 +149,7 @@ class ExcelBuilder extends AbstractSheetBuilder {
         setValue(book, cell, value, span, styleCache.getStyle(style));
     }
 
-    private void setValue(HSSFWorkbook book, HSSFCell cell, Object value, short span, CellStyle style) {
+    private void setValue(Workbook book, Cell cell, Object value, short span, CellStyle style) {
         if (value != null) {
             Object content = convert(value);
             if (content instanceof Boolean) {
@@ -163,7 +168,9 @@ class ExcelBuilder extends AbstractSheetBuilder {
                 cell.setCellValue(content.toString());
             }
         } else {
-            cell.setCellValue((String) null);
+            // cell.setCellValue((String) null);
+            // NullPointerException when using 'SXSSFWorkbook' and 'autoSizeColumns' on 'getCellWidth' method.
+            cell.setCellValue((String) "");
         }
         if (span > 1) {
             CellRangeAddress region = new CellRangeAddress(cell.getRowIndex(), cell.getRowIndex(), cell.getColumnIndex(),
@@ -181,12 +188,12 @@ class ExcelBuilder extends AbstractSheetBuilder {
     }
 
     @Override
-    protected void doAddHeaders(List<List<Cell>> headers) {
+    protected void doAddHeaders(List<List<org.fenixedu.commons.spreadsheet.SheetData.Cell>> headers) {
         if (!headers.get(0).isEmpty()) {
-            for (List<Cell> headerRow : headers) {
+            for (List<org.fenixedu.commons.spreadsheet.SheetData.Cell> headerRow : headers) {
                 colnum = 0;
-                final HSSFRow row = sheet.createRow(rownum++);
-                for (Cell cell : headerRow) {
+                final Row row = this.sheet.createRow(rownum++);
+                for (org.fenixedu.commons.spreadsheet.SheetData.Cell cell : headerRow) {
                     setValue(book, row.createCell(colnum++), cell.getValue(), cell.getSpan(), styleCache.getStyle(headerStyle));
                     colnum = colnum + cell.getSpan() - 1;
                 }
@@ -195,10 +202,10 @@ class ExcelBuilder extends AbstractSheetBuilder {
     }
 
     @Override
-    protected void doAddRow(List<Cell> rowCells) {
+    protected void doAddRow(List<org.fenixedu.commons.spreadsheet.SheetData.Cell> rowCells) {
         colnum = 0;
-        final HSSFRow row = sheet.createRow(rownum++);
-        for (Cell cell : rowCells) {
+        final Row row = this.sheet.createRow(rownum++);
+        for (org.fenixedu.commons.spreadsheet.SheetData.Cell cell : rowCells) {
             setValue(book, row.createCell(colnum++), cell.getValue(), cell.getSpan());
             colnum = colnum + cell.getSpan() - 1;
         }
@@ -207,8 +214,8 @@ class ExcelBuilder extends AbstractSheetBuilder {
     @Override
     public void addFooter(SheetData<?> sheetData) {
         colnum = 0;
-        final HSSFRow row = this.sheet.createRow(rownum++);
-        for (Cell cell : sheetData.getFooter()) {
+        final Row row = this.sheet.createRow(rownum++);
+        for (org.fenixedu.commons.spreadsheet.SheetData.Cell cell : sheetData.getFooter()) {
             setValue(book, row.createCell(colnum++), cell.getValue(), cell.getSpan());
             colnum = colnum + cell.getSpan() - 1;
         }
@@ -220,6 +227,7 @@ class ExcelBuilder extends AbstractSheetBuilder {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        book.dispose();
         super.close();
     }
 
@@ -229,6 +237,9 @@ class ExcelBuilder extends AbstractSheetBuilder {
         int headersSize = this.currentSheet.getHeaders().size();
         this.sheet.createFreezePane(0, headersSize);
         if (rownum < 10000 && colnum < 100) {
+            if (sheet instanceof SXSSFSheet) {
+                ((SXSSFSheet) sheet).trackAllColumnsForAutoSizing();
+            }
             for (int i = 0; i < colnum; ++i) {
                 sheet.autoSizeColumn(i);
             }
