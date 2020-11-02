@@ -1,10 +1,10 @@
 package org.fenixedu.commons.spreadsheet.styles;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Workbook;
 
-public class FontHeight extends CellStyle {
+public class FontHeight extends SpreadsheetCellStyle {
 
     private final short height;
 
@@ -13,14 +13,14 @@ public class FontHeight extends CellStyle {
     }
 
     @Override
-    protected void appendToStyle(HSSFWorkbook book, HSSFCellStyle style, HSSFFont font) {
+    protected void appendToStyle(Workbook book, CellStyle style, Font font) {
         font.setFontHeightInPoints(height);
     }
 
     @Override
-    public HSSFCellStyle getStyle(HSSFWorkbook book) {
-        HSSFCellStyle style = book.createCellStyle();
-        HSSFFont font = book.createFont();
+    public CellStyle getStyle(Workbook book) {
+        CellStyle style = book.createCellStyle();
+        Font font = book.createFont();
         appendToStyle(book, style, font);
         style.setFont(font);
         return style;

@@ -1,13 +1,13 @@
 package org.fenixedu.commons.spreadsheet.styles;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.google.common.base.Objects;
 
-public class CellBorder extends CellStyle {
+public class CellBorder extends SpreadsheetCellStyle {
 
     private final BorderStyle borderBottom;
     private final BorderStyle borderLeft;
@@ -22,7 +22,7 @@ public class CellBorder extends CellStyle {
     }
 
     @Override
-    protected void appendToStyle(HSSFWorkbook book, HSSFCellStyle style, HSSFFont font) {
+    protected void appendToStyle(Workbook book, CellStyle style, Font font) {
         style.setBorderBottom(borderBottom);
         style.setBorderLeft(borderLeft);
         style.setBorderRight(borderRight);

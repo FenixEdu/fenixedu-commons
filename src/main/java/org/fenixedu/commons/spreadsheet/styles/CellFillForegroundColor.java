@@ -1,20 +1,20 @@
 package org.fenixedu.commons.spreadsheet.styles;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Workbook;
 
-public class CellFillForegroundColor extends CellStyle {
+public class CellFillForegroundColor extends SpreadsheetCellStyle {
 
-    private final HSSFColor color;
+    private final IndexedColors color;
 
-    public CellFillForegroundColor(HSSFColor color) {
+    public CellFillForegroundColor(IndexedColors color) {
         this.color = color;
     }
 
     @Override
-    protected void appendToStyle(HSSFWorkbook book, HSSFCellStyle style, HSSFFont font) {
+    protected void appendToStyle(Workbook book, CellStyle style, Font font) {
         style.setFillForegroundColor(color.getIndex());
     }
 

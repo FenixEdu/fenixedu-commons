@@ -1,11 +1,11 @@
 package org.fenixedu.commons.spreadsheet.styles;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Workbook;
 
-public class CellFillPattern extends CellStyle {
+public class CellFillPattern extends SpreadsheetCellStyle {
 
     private final FillPatternType pattern;
 
@@ -14,7 +14,7 @@ public class CellFillPattern extends CellStyle {
     }
 
     @Override
-    protected void appendToStyle(HSSFWorkbook book, HSSFCellStyle style, HSSFFont font) {
+    protected void appendToStyle(Workbook book, CellStyle style, Font font) {
         style.setFillPattern(pattern);
     }
 

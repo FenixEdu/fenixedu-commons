@@ -1,10 +1,10 @@
 package org.fenixedu.commons.spreadsheet.styles;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Workbook;
 
-public class CellWrapText extends CellStyle {
+public class CellWrapText extends SpreadsheetCellStyle {
 
     private final boolean wrap;
 
@@ -13,7 +13,7 @@ public class CellWrapText extends CellStyle {
     }
 
     @Override
-    protected void appendToStyle(HSSFWorkbook book, HSSFCellStyle style, HSSFFont font) {
+    protected void appendToStyle(Workbook book, CellStyle style, Font font) {
         style.setWrapText(wrap);
     }
 

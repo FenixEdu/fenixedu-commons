@@ -2,11 +2,11 @@ package org.fenixedu.commons.spreadsheet;
 
 /**
  * Spreadsheet formats supported by {@link SpreadsheetBuilder}.
- * 
+ *
  * @author Pedro Santos (pedro.miguel.santos@ist.utl.pt)
  */
 public enum WorkbookExportFormat {
-    EXCEL, CSV(","), TSV("\t");
+    EXCEL, CSV(","), TSV("\t"), DOCX;
 
     private String separator;
 
