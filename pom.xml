@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>fenixedu-commons</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>4.0.0</version>
     <name>FenixEdu Toolkit</name>
 
     <properties>
