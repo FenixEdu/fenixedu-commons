@@ -4,6 +4,9 @@
  */
 package org.fenixedu.commons.spreadsheet;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,9 +17,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * Use new approach to excel table generation: {@link SpreadsheetBuilder}.
@@ -258,7 +258,11 @@ public class Spreadsheet {
             if (cellValue == null) {
                 outputStream.write("".getBytes());
             } else {
-                outputStream.write(cellValue.toString().replace(columnSeperator, "").getBytes());
+                outputStream.write(cellValue.toString()
+                        .replace(columnSeperator, " ")
+                        .replace("\r?\n", " ")
+                        .replace("\t", " ")
+                        .getBytes());
             }
         }
         outputStream.write(lineSepeator.getBytes());
